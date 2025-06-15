@@ -1,0 +1,156 @@
+{
+  "buy": [
+    {
+      "symbol": "XRPUSDT",
+      "change_percent": 4.122,
+      "quote_volume": 1238011968.2435,
+      "last_price": 2.2656
+    },
+    {
+      "symbol": "IOSTUSDT",
+      "change_percent": 6.712,
+      "quote_volume": 81995401.875213,
+      "last_price": 0.003959
+    },
+    {
+      "symbol": "MDTUSDT",
+      "change_percent": 7.652,
+      "quote_volume": 13059404.42632,
+      "last_price": 0.06331
+    },
+    {
+      "symbol": "DGBUSDT",
+      "change_percent": 18.862,
+      "quote_volume": 45674718.93021,
+      "last_price": 0.01922
+    },
+    {
+      "symbol": "UMAUSDT",
+      "change_percent": 13.633,
+      "quote_volume": 113756380.975,
+      "last_price": 1.367
+    },
+    {
+      "symbol": "FLMUSDT",
+      "change_percent": 4.267,
+      "quote_volume": 19449668.8396,
+      "last_price": 0.0391
+    },
+    {
+      "symbol": "ICPUSDT",
+      "change_percent": 6.33,
+      "quote_volume": 80096743.796,
+      "last_price": 5.56
+    },
+    {
+      "symbol": "LPTUSDT",
+      "change_percent": 4.209,
+      "quote_volume": 450049457.704,
+      "last_price": 7.799
+    },
+    {
+      "symbol": "CHESSUSDT",
+      "change_percent": 11.001,
+      "quote_volume": 45704391.08463,
+      "last_price": 0.07426
+    },
+    {
+      "symbol": "ANIMEUSDT",
+      "change_percent": 8.758,
+      "quote_volume": 746091523.86558,
+      "last_price": 0.03589
+    },
+    {
+      "symbol": "GPSUSDT",
+      "change_percent": 10.33,
+      "quote_volume": 124116097.56781,
+      "last_price": 0.02542
+    },
+    {
+      "symbol": "TUTUSDT",
+      "change_percent": 12.186,
+      "quote_volume": 35250549.85861,
+      "last_price": 0.03167
+    },
+    {
+      "symbol": "BANANAS31USDT",
+      "change_percent": 4.526,
+      "quote_volume": 12702603.251759,
+      "last_price": 0.006097
+    }
+  ],
+  "sell": [
+    {
+      "symbol": "FETUSDT",
+      "change_percent": -3.572,
+      "quote_volume": 65485724.4294,
+      "last_price": 0.7424
+    },
+    {
+      "symbol": "FUNUSDT",
+      "change_percent": -6.462,
+      "quote_volume": 21418820.276198,
+      "last_price": 0.003358
+    },
+    {
+      "symbol": "STRAXUSDT",
+      "change_percent": -9.662,
+      "quote_volume": 57366886.5831,
+      "last_price": 1.4174
+    },
+    {
+      "symbol": "MASKUSDT",
+      "change_percent": -6.837,
+      "quote_volume": 346318630.5753,
+      "last_price": 1.717
+    },
+    {
+      "symbol": "DEXEUSDT",
+      "change_percent": -6.038,
+      "quote_volume": 33307252.20836,
+      "last_price": 9.898
+    },
+    {
+      "symbol": "CETUSUSDT",
+      "change_percent": -9.281,
+      "quote_volume": 49578410.28758,
+      "last_price": 0.11661
+    },
+    {
+      "symbol": "BMTUSDT",
+      "change_percent": -3.563,
+      "quote_volume": 22970481.6987,
+      "last_price": 0.1218
+    },
+    {
+      "symbol": "MUBARAKUSDT",
+      "change_percent": -3.044,
+      "quote_volume": 27879910.70629,
+      "last_price": 0.03918
+    },
+    {
+      "symbol": "INITUSDT",
+      "change_percent": -4.138,
+      "quote_volume": 32856314.8207,
+      "last_price": 0.6695
+    },
+    {
+      "symbol": "SYRUPUSDT",
+      "change_percent": -4.163,
+      "quote_volume": 45306368.97081,
+      "last_price": 0.40237
+    },
+    {
+      "symbol": "NXPCUSDT",
+      "change_percent": -4.116,
+      "quote_volume": 76367611.55525,
+      "last_price": 1.25688
+    },
+    {
+      "symbol": "HUMAUSDT",
+      "change_percent": -4.215,
+      "quote_volume": 347037212.424709,
+      "last_price": 0.053266
+    }
+  ]
+}
