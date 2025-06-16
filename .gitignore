@@ -1,5 +1,17 @@
+# Ignore secrets and environment-specific configurations
 .env
+
+# Allow sample config
+!.env.sample
+
+# Ignore Python artifacts
 __pycache__/
+*.pyc
+
+# Ignore virtual environment
+venv/
+
+# Ignore logs and backups
 *.log
 *.zip
 
