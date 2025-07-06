@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from ..coinswitch_api_utils import send_request
+from coinswitch_api_utils import send_request
 
 load_dotenv()
 
