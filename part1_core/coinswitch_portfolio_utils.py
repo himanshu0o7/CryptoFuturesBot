@@ -5,31 +5,20 @@ import time
 import logging
 import json
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
-
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-
-# Load env variables
-load_dotenv()
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-API_SECRET = os.getenv("COINSWITCH_SECRET_KEY")
-
-# Endpoint details
-endpoint = "/trade/api/v2/user/portfolio"
-method = "GET"
-payload = {}
-params = {}  # No params required
-
-# Prepare signature
-epoch_time = str(int(time.time() * 1000))
 from coinswitch_env_loader import API_KEY, secret_key
 
-# Full URL
+logging.basicConfig(level=logging.INFO)
+
+endpoint = "/trade/api/v2/user/portfolio"
+method = "GET"
+params = {}
+payload = {}
+
+epoch_time = str(int(time.time() * 1000))
+signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
+
 url = "https://coinswitch.co" + endpoint
 
-# Headers
 headers = {
     'Content-Type': 'application/json',
     'X-AUTH-SIGNATURE': signature,
@@ -37,7 +26,6 @@ headers = {
     'X-AUTH-EPOCH': epoch_time
 }
 
-# API Call
 logging.info("Sending Portfolio request...")
 response = requests.request(method, url, headers=headers, json=payload)
 logging.info(f"Status Code: {response.status_code}")
@@ -53,4 +41,3 @@ else:
     logging.error(f"Failed to fetch portfolio: {response.status_code} - {response.text}")
 
 logging.info("Completed Portfolio API.")
-

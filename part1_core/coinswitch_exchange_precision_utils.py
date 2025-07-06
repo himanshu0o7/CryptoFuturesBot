@@ -4,13 +4,7 @@ import json
 import time
 from urllib.parse import urlparse, urlencode, unquote_plus
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
-
-# Load .env variables
-load_dotenv()
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-API_SECRET = os.getenv("COINSWITCH_SECRET_KEY")
+from coinswitch_env_loader import API_KEY, secret_key
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -29,7 +23,7 @@ epoch_time = str(int(time.time() * 1000))
 params = {}
 
 # Generate signature
-signature = generate_signature(method, endpoint, params, epoch_time, API_SECRET)
+signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 
 # Build final URL
 url = "https://coinswitch.co" + endpoint

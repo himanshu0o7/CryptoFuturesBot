@@ -4,14 +4,7 @@ import logging
 import json
 from urllib.parse import urlparse, urlencode, quote_plus
 from coinswitch_signature_utils import generate_signature
-
-# Load API keys from env or config
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-SECRET_KEY = os.getenv("COINSWITCH_SECRET_KEY")
+from coinswitch_env_loader import API_KEY, secret_key
 
 # Config logging
 logging.basicConfig(level=logging.INFO)
@@ -34,7 +27,8 @@ def cancel_one_order(order_id):
         method,
         endpoint,
         params,
-        epoch_time
+        epoch_time,
+        secret_key
     )
 
     # Build URL with params

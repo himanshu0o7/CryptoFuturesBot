@@ -3,17 +3,10 @@ import time
 import json
 import logging
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
+from coinswitch_env_loader import API_KEY, secret_key
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
-
-# Load environment variables
-load_dotenv()
-
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-API_SECRET = os.getenv("COINSWITCH_SECRET_KEY")
 
 # Base URL and endpoint
 BASE_URL = "https://coinswitch.co"
@@ -34,7 +27,7 @@ def cancel_all_orders():
         params = {}  # No GET params needed
 
         # Generate signature
-        signature = generate_signature(method, endpoint, params, epoch_time)
+        signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 
         url = BASE_URL + endpoint
 

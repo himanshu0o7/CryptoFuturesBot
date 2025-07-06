@@ -5,20 +5,16 @@ import json
 import time
 import hmac
 import hashlib
-import os
-from dotenv import load_dotenv
+from coinswitch_env_loader import API_KEY, secret_key
 import logging
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 
-# Load API keys
-load_dotenv()
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-API_SECRET = os.getenv("COINSWITCH_SECRET_KEY")
+# Load API keys from env loader
 
-if not API_KEY or not API_SECRET:
-    logging.error("API_KEY or API_SECRET not found in .env! Exiting.")
+if not API_KEY or not secret_key:
+    logging.error("API_KEY or secret_key not found in environment! Exiting.")
     exit(1)
 
 # API details
@@ -31,7 +27,7 @@ timestamp = str(int(time.time() * 1000))
 
 # Generate signature
 message = f"{method} {endpoint} {timestamp}"
-signature = hmac.new(API_SECRET.encode(), message.encode(), hashlib.sha256).hexdigest()
+signature = hmac.new(secret_key.encode(), message.encode(), hashlib.sha256).hexdigest()
 
 # Build headers
 headers = {

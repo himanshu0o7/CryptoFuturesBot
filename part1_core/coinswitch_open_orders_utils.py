@@ -5,14 +5,7 @@ import time
 import logging
 import json
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
-
-# Load environment variables
-load_dotenv()
-
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-API_SECRET = os.getenv("COINSWITCH_SECRET_KEY")
+from coinswitch_env_loader import API_KEY, secret_key
 
 def get_open_orders(exchange="EXCHANGE_2", count=20):
     logging.info(f"Fetching open orders... Exchange={exchange}")
@@ -29,7 +22,7 @@ def get_open_orders(exchange="EXCHANGE_2", count=20):
 
     # Generate required headers
     epoch_time = str(int(time.time() * 1000))
-    signature = generate_signature(method, endpoint, params, epoch_time)
+    signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 
     url = "https://coinswitch.co" + endpoint
     from urllib.parse import urlparse, urlencode
