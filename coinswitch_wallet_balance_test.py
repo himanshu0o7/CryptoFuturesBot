@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.INFO)
 
 # Load API keys from env loader
 
-if not API_KEY or not secret_key:
-    logging.error("API_KEY or secret_key not found in environment! Exiting.")
+if not API_KEY or not SECRET_KEY:
+    logging.error("API_KEY or SECRET_KEY not found in environment! Exiting.")
     exit(1)
 
 # API details
