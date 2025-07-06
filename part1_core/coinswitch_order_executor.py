@@ -5,15 +5,12 @@ import logging
 import time
 import json
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
+from coinswitch_env_loader import API_KEY, secret_key
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 
-# Load API keys from .env
-load_dotenv()
-from coinswitch_env_loader import API_KEY, secret_key
+
 
 def place_order(symbol, price, side, order_type, quantity, trigger_price=None, reduce_only=False):
     endpoint = "/trade/api/v2/futures/order"

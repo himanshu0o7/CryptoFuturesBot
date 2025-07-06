@@ -4,14 +4,9 @@ import json
 import time
 import os
 from cryptography.hazmat.primitives.asymmetric import ed25519
-from dotenv import load_dotenv
 from urllib.parse import urlparse, urlencode
 import urllib
-
-load_dotenv()
-
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-SECRET_KEY = os.getenv("COINSWITCH_SECRET_KEY")
+from coinswitch_env_loader import API_KEY, secret_key
 
 def get_server_time():
     url = "https://coinswitch.co/trade/api/v2/time"
@@ -35,9 +30,9 @@ def get_signature(method, endpoint, params=None, payload=None):
         signature_msg = method + unquote_endpoint + json.dumps(payload, separators=(',', ':'), sort_keys=True)
 
     request_string = bytes(signature_msg, 'utf-8')
-    secret_key_bytes = bytes.fromhex(SECRET_KEY)
-    secret_key = ed25519.Ed25519PrivateKey.from_private_bytes(secret_key_bytes)
-    signature_bytes = secret_key.sign(request_string)
+    secret_key_bytes = bytes.fromhex(secret_key)
+    sk_obj = ed25519.Ed25519PrivateKey.from_private_bytes(secret_key_bytes)
+    signature_bytes = sk_obj.sign(request_string)
     signature = signature_bytes.hex()
 
     return signature

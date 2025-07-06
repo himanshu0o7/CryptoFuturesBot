@@ -5,15 +5,12 @@ import logging
 import time
 import json
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
+from coinswitch_env_loader import API_KEY, secret_key
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 
-# Load API keys from .env
-load_dotenv()
-API_KEY = os.getenv("COINSWITCH_API_KEY")
+
 
 def cancel_all_orders(symbol=None):
     endpoint = "/trade/api/v2/futures/cancel_all"
@@ -26,7 +23,7 @@ def cancel_all_orders(symbol=None):
         payload["symbol"] = symbol  # Optional: cancel only 1 symbol
 
     epoch_time = str(int(time.time() * 1000))
-    signature = generate_signature(method, endpoint, params, epoch_time)
+    signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
     url = "https://coinswitch.co" + endpoint
 
     headers = {

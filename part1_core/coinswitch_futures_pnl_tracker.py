@@ -5,13 +5,7 @@ import json
 import logging
 import time
 from coinswitch_signature_utils import generate_signature
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-API_KEY = os.getenv("COINSWITCH_API_KEY")
-API_SECRET = os.getenv("COINSWITCH_SECRET_KEY")
+from coinswitch_env_loader import API_KEY, secret_key
 
 endpoint = "/trade/api/v2/futures/wallet_balance"
 method = "GET"
@@ -22,7 +16,7 @@ payload = {}
 epoch_time = str(int(time.time() * 1000))
 
 # Generate signature
-signature = generate_signature(method, endpoint, params, epoch_time)
+signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 
 url = "https://coinswitch.co" + endpoint
 
