@@ -5,7 +5,7 @@ import json
 import time
 import hmac
 import hashlib
-from coinswitch_env_loader import API_KEY, secret_key
+from coinswitch_env_loader import API_KEY, SECRET_KEY
 import logging
 
 # Setup logging
