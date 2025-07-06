@@ -27,7 +27,7 @@ timestamp = str(int(time.time() * 1000))
 
 # Generate signature
 message = f"{method} {endpoint} {timestamp}"
-signature = hmac.new(secret_key.encode(), message.encode(), hashlib.sha256).hexdigest()
+signature = hmac.new(SECRET_KEY.encode(), message.encode(), hashlib.sha256).hexdigest()
 
 # Build headers
 headers = {
