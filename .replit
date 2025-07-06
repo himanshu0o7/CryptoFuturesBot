@@ -1,9 +1,21 @@
-modules = ["python-3.12", "bash", "python-3.10", "pyright", "pyright-extended", "ruff", "nodejs-with-prybar-18", "python-with-prybar-3.10", "docker"]
-run = "run = \"python3 main.py\" language = \"python3\""
+modules = ["python-3.10", "c-clang14", "bash"]
+run = "run = \"python3 streamlit_app.py"
 
 [nix]
 channel = "stable-24_05"
-packages = ["cargo", "glibcLocales", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
+packages = ["cargo", "glibcLocales", "imagemagick_light", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
 
 [deployment]
-run = ["sh", "-c", "run = \"python3 main.py\" language = \"python3\""]
+run = ["sh", "-c", "run = \"python3 streamlit_app.py"]
+
+[[ports]]
+localPort = 8501
+externalPort = 80
+
+[[ports]]
+localPort = 8502
+externalPort = 3000
+run = "streamlit run app.py"
+
+[env]
+PORT = "8501"
