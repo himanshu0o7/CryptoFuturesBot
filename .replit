@@ -1,0 +1,9 @@
+modules = ["python-3.12", "bash", "python-3.10", "pyright", "pyright-extended", "ruff", "nodejs-with-prybar-18", "python-with-prybar-3.10", "docker"]
+run = "run = \"python3 main.py\" language = \"python3\""
+
+[nix]
+channel = "stable-24_05"
+packages = ["cargo", "glibcLocales", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
+
+[deployment]
+run = ["sh", "-c", "run = \"python3 main.py\" language = \"python3\""]
