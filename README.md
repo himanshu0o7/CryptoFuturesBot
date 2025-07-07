@@ -114,7 +114,7 @@ python3 main_runner.py
 ```
 
 codex/update-readme-and-add-installation-steps
-This script loads the various modules in sequence.  You can also run `main_runner.py` or `./run_all.sh` for testing individual components.
+This script loads the various modules in sequence and starts the main trading loop.  You can also run `./run_all.sh` for testing.
 
 ## Quick Start Example
 
