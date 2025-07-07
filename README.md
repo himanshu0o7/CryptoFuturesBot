@@ -1,5 +1,44 @@
 # CryptoFuturesBot
 
+ codex/update-readme-and-add-installation-steps
+CryptoFuturesBot is a modular trading bot that integrates with the CoinSwitch API and can send Telegram alerts.  The project uses a simple `.env` configuration so you can keep your credentials separate from the code.
+
+## Installation
+
+1. Clone this repository.
+2. (Optional) create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+3. Install the Python dependencies:
+   ```bash
+   pip install -e .
+   ```
+
+## Environment Variables
+
+Create a `.env` file in the project root or start from the provided `.env.sample`:
+
+```bash
+cp .env.sample .env
+```
+
+Populate it with the following values:
+
+- `COINSWITCH_API_KEY` – your CoinSwitch API key.
+- `COINSWITCH_SECRET_KEY` – your 64-character hex-encoded Ed25519 private key used to sign API requests.
+- `OPENAI_API_KEY` – token for OpenAI features used in helper scripts.
+- `TELEGRAM_BOT_TOKEN` – token for the Telegram bot that sends alerts.
+- `TELEGRAM_CHAT_ID` – chat ID where the bot should post updates.
+
+You can regenerate `.env.sample` from an existing `.env` using `./generate_env_sample.sh`.
+
+## Running the Main Controller
+
+After configuring the environment variables and installing dependencies, run the controller to start the bot modules:
+
+
 codex/rewrite-readme.txt-as-readme.md
 ## Overview
 CryptoFuturesBot is an experimental trading bot framework. It provides several
@@ -69,10 +108,27 @@ The trading logic can be launched with one of the main entry points:
   ```
 
 If you simply want to execute the default loop included in the repository, run `main_runner.py` instead:
+ master
 ```bash
 python3 main_runner.py
 ```
 
+codex/update-readme-and-add-installation-steps
+This script loads the various modules in sequence and starts the main trading loop.  You can also run `./run_all.sh` for testing.
+
+## Quick Start Example
+
+```bash
+# 1. Set up environment
+cp .env.sample .env
+# edit .env with your keys
+
+# 2. Install dependencies
+pip install -e .
+
+# 3. Run the bot
+python3 main_runner.py
+```
 ## Backup Scripts
 
 - `auto_backup.sh` – creates a zip archive of the project (placeholder implementation).
@@ -86,4 +142,5 @@ These scripts help keep your trading data backed up regularly.
 - `codeium_explain_module.py` – example integration for explaining or fixing annotated code blocks.
 
 Set `OPENAI_API_KEY` in your environment to use these utilities.
+ master
  master
