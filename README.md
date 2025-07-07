@@ -38,7 +38,7 @@ You can regenerate `.env.sample` from an existing `.env` using `./generate_env_s
 After configuring the environment variables and installing dependencies, run the controller to start the bot modules:
 
 ```bash
-python3 master_controller.py
+python3 main_runner.py
 ```
 
 This script loads the various modules in sequence.  You can also run `main_runner.py` or `./run_all.sh` for testing individual components.
