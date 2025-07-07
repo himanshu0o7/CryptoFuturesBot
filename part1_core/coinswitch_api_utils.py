@@ -8,10 +8,12 @@ from urllib.parse import urlparse, urlencode
 import urllib
 from coinswitch_env_loader import API_KEY, secret_key
 
+
 def get_server_time():
     url = "https://coinswitch.co/trade/api/v2/time"
     response = requests.get(url)
     return str(response.json().get("serverTime", int(time.time() * 1000)))
+
 
 def get_signature(method, endpoint, params=None, payload=None):
     if params is None:
@@ -21,21 +23,30 @@ def get_signature(method, endpoint, params=None, payload=None):
 
     unquote_endpoint = endpoint
     if method == "GET" and len(params) != 0:
-        endpoint += ('&', '?')[urlparse(endpoint).query == ''] + urlencode(params)
+        endpoint += ("&", "?")[urlparse(endpoint).query == ""] + urlencode(params)
         unquote_endpoint = urllib.parse.unquote_plus(endpoint)
 
     if method == "GET":
-        signature_msg = method + unquote_endpoint + json.dumps(payload, separators=(',', ':'), sort_keys=True)
+        signature_msg = (
+            method
+            + unquote_endpoint
+            + json.dumps(payload, separators=(",", ":"), sort_keys=True)
+        )
     else:
-        signature_msg = method + unquote_endpoint + json.dumps(payload, separators=(',', ':'), sort_keys=True)
+        signature_msg = (
+            method
+            + unquote_endpoint
+            + json.dumps(payload, separators=(",", ":"), sort_keys=True)
+        )
 
-    request_string = bytes(signature_msg, 'utf-8')
+    request_string = bytes(signature_msg, "utf-8")
     secret_key_bytes = bytes.fromhex(secret_key)
     sk_obj = ed25519.Ed25519PrivateKey.from_private_bytes(secret_key_bytes)
     signature_bytes = sk_obj.sign(request_string)
     signature = signature_bytes.hex()
 
     return signature
+
 
 def send_request(method, endpoint, params=None, payload=None):
     if params is None:
@@ -47,9 +58,9 @@ def send_request(method, endpoint, params=None, payload=None):
     url = "https://coinswitch.co" + endpoint
 
     headers = {
-        'Content-Type': 'application/json',
-        'X-AUTH-SIGNATURE': signature,
-        'X-AUTH-APIKEY': API_KEY
+        "Content-Type": "application/json",
+        "X-AUTH-SIGNATURE": signature,
+        "X-AUTH-APIKEY": API_KEY,
     }
 
     if method == "GET":
@@ -66,4 +77,3 @@ def send_request(method, endpoint, params=None, payload=None):
         return None
 
     return response.json()
-

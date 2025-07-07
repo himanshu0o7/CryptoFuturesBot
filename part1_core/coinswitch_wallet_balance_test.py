@@ -33,10 +33,10 @@ signature = hmac.new(API_SECRET.encode(), message.encode(), hashlib.sha256).hexd
 
 # Build headers
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-TIMESTAMP': timestamp
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-TIMESTAMP": timestamp,
 }
 
 # Make request
@@ -49,8 +49,9 @@ try:
         logging.info("Wallet Balance fetched successfully!")
         print(json.dumps(response.json(), indent=4))
     else:
-        logging.error(f"Failed to fetch wallet balance: {response.status_code} - {response.text}")
+        logging.error(
+            f"Failed to fetch wallet balance: {response.status_code} - {response.text}"
+        )
 
 except Exception as e:
     logging.error(f"An error occurred: {e}")
-
