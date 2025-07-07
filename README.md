@@ -127,7 +127,7 @@ cp .env.sample .env
 pip install -e .
 
 # 3. Run the bot
-python3 master_controller.py
+python3 main_runner.py
 ```
 ## Backup Scripts
 
