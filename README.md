@@ -26,7 +26,7 @@ cp .env.sample .env
 Populate it with the following values:
 
 - `COINSWITCH_API_KEY` – your CoinSwitch API key.
-- `COINSWITCH_SECRET_KEY` – secret key used to sign requests.
+- `COINSWITCH_SECRET_KEY` – your 64-character hex-encoded Ed25519 private key used to sign API requests.
 - `OPENAI_API_KEY` – token for OpenAI features used in helper scripts.
 - `TELEGRAM_BOT_TOKEN` – token for the Telegram bot that sends alerts.
 - `TELEGRAM_CHAT_ID` – chat ID where the bot should post updates.
