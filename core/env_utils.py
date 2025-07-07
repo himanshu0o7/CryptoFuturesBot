@@ -18,4 +18,3 @@ try:
     print(f"Length: {len(env_vars['COINSWITCH_SECRET_KEY'])}")
 except ValueError as e:
     print(f"Error: {e}")
-
