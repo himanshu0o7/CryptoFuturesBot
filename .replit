@@ -1,12 +1,12 @@
 modules = ["python-3.10", "c-clang14", "bash"]
-run = "run = \"python3 streamlit_app.py"
+run = "run = \"python3 infra/streamlit_app.py"
 
 [nix]
 channel = "stable-24_05"
 packages = ["cargo", "glibcLocales", "imagemagick_light", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc"]
 
 [deployment]
-run = ["sh", "-c", "run = \"python3 streamlit_app.py"]
+run = ["sh", "-c", "run = \"python3 infra/streamlit_app.py"]
 
 [[ports]]
 localPort = 8501
