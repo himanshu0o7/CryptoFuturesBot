@@ -31,6 +31,7 @@ def test_alert_new_signals(monkeypatch):
     with patch('telegram_bot.requests.post', return_value=mock_resp) as mock_post:
         buys = [{'symbol': 'BTC', 'change_percent': '5', 'quote_volume': 1000, 'last_price': '50000'}]
         bot.alert_new_signals(buys, [])
-        assert mock_post.called
+        mock_post.assert_called_once()
         sent = mock_post.call_args.kwargs['json']['text']
-        assert 'BTC' in sent
+        expected_line = "✅ BTC | 5% | Vol $1,000 | Price 50000"
+        assert expected_line in sent
