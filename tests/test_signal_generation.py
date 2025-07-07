@@ -2,7 +2,7 @@ import importlib
 import os
 import sys
 
-sys.path.append(os.path.abspath('part1_core'))
+from part1_core import signal_generator as sg
 sg = importlib.import_module('signal_generator')
 
 
