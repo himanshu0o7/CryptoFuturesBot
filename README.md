@@ -14,7 +14,7 @@ Telegram notification system.
    ```
 2. **Install dependencies**
    ```bash
-   pip install -e .
+   pip install cryptography requests python-dotenv pandas ccxt pandas-ta python-telegram-bot
    ```
 
 ## Environment variables
