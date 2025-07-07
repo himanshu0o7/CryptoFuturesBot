@@ -1,0 +1,17 @@
+# environment.yml
+name: crypto-futures-bot
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - ccxt
+      - streamlit
+      - pandas
+      - numpy
+      - ta
+      - python-telegram-bot
+      - schedule
+      - requests
+      - matplotlib
