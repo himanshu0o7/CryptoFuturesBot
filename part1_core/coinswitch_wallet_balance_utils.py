@@ -11,7 +11,6 @@ from coinswitch_env_loader import API_KEY, secret_key
 logging.basicConfig(level=logging.INFO)
 
 
-
 def get_wallet_balance():
     endpoint = "/trade/api/v2/futures/wallet_balance"
     method = "GET"
@@ -25,10 +24,10 @@ def get_wallet_balance():
     url = "https://coinswitch.co" + endpoint
 
     headers = {
-        'Content-Type': 'application/json',
-        'X-AUTH-SIGNATURE': signature,
-        'X-AUTH-APIKEY': API_KEY,
-        'X-AUTH-EPOCH': epoch_time
+        "Content-Type": "application/json",
+        "X-AUTH-SIGNATURE": signature,
+        "X-AUTH-APIKEY": API_KEY,
+        "X-AUTH-EPOCH": epoch_time,
     }
 
     try:
@@ -41,11 +40,13 @@ def get_wallet_balance():
             response_json = response.json()
             print(json.dumps(response_json.get("data", {}), indent=2))
         else:
-            logging.error(f"Failed to fetch wallet balance: {response.status_code} - {response.text}")
+            logging.error(
+                f"Failed to fetch wallet balance: {response.status_code} - {response.text}"
+            )
 
     except Exception as e:
         logging.error(f"Exception occurred: {e}")
 
+
 if __name__ == "__main__":
     get_wallet_balance()
-

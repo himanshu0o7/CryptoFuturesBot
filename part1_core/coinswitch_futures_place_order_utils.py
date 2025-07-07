@@ -35,10 +35,10 @@ url = "https://coinswitch.co" + endpoint
 
 # Headers
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 # Request body
@@ -50,7 +50,7 @@ payload = {
     "order_type": order_type,
     "quantity": quantity,
     "trigger_price": trigger_price,
-    "reduce_only": reduce_only
+    "reduce_only": reduce_only,
 }
 
 # Send request
@@ -62,8 +62,8 @@ try:
         logging.info("Order placed successfully!")
         logging.info(f"Response: {json.dumps(response.json(), indent=2)}")
     else:
-        logging.error(f"Failed to place order: {response.status_code} - {response.text}")
+        logging.error(
+            f"Failed to place order: {response.status_code} - {response.text}"
+        )
 except Exception as e:
     logging.error(f"Exception occurred: {e}")
-
-

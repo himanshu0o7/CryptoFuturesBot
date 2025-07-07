@@ -7,6 +7,7 @@ import json
 from coinswitch_signature_utils import generate_signature
 from coinswitch_env_loader import API_KEY, secret_key
 
+
 def get_open_orders(exchange="EXCHANGE_2", count=20):
     logging.info(f"Fetching open orders... Exchange={exchange}")
 
@@ -16,8 +17,8 @@ def get_open_orders(exchange="EXCHANGE_2", count=20):
 
     params = {
         "exchange": exchange,
-        "open": True,        # <--- IMPORTANT: filter OPEN orders
-        "count": count
+        "open": True,  # <--- IMPORTANT: filter OPEN orders
+        "count": count,
     }
 
     # Generate required headers
@@ -26,13 +27,14 @@ def get_open_orders(exchange="EXCHANGE_2", count=20):
 
     url = "https://coinswitch.co" + endpoint
     from urllib.parse import urlparse, urlencode
-    url += ('&', '?')[urlparse(url).query == ''] + urlencode(params)
+
+    url += ("&", "?")[urlparse(url).query == ""] + urlencode(params)
 
     headers = {
-        'Content-Type': 'application/json',
-        'X-AUTH-SIGNATURE': signature,
-        'X-AUTH-APIKEY': API_KEY,
-        'X-AUTH-EPOCH': epoch_time
+        "Content-Type": "application/json",
+        "X-AUTH-SIGNATURE": signature,
+        "X-AUTH-APIKEY": API_KEY,
+        "X-AUTH-EPOCH": epoch_time,
     }
 
     try:
@@ -44,12 +46,14 @@ def get_open_orders(exchange="EXCHANGE_2", count=20):
             response_data = response.json()
             print(json.dumps(response_data.get("data", {}), indent=2))
         else:
-            logging.error(f"Failed to fetch open orders: {response.status_code} - {response.text}")
+            logging.error(
+                f"Failed to fetch open orders: {response.status_code} - {response.text}"
+            )
 
     except Exception as e:
         logging.error(f"Exception occurred: {e}")
 
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     get_open_orders()
-

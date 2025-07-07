@@ -1,4 +1,5 @@
 """Simple backtesting placeholder"""
+
 from .coinswitch_api import fetch_candles
 from .indicators import detect_breakout
 
@@ -15,4 +16,3 @@ def run(symbol: str, limit: int = 200):
 
 if __name__ == "__main__":
     run("BTCUSDT")
-

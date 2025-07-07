@@ -15,10 +15,11 @@ method = "POST"
 
 # Parameters
 payload = {
-    "exchange": "EXCHANGE_2",   # Mandatory
+    "exchange": "EXCHANGE_2",  # Mandatory
     # Optional → you can cancel specific symbol only:
     # "symbol": "BTCUSDT"       # uncomment to cancel one symbol
 }
+
 
 # Main function
 def cancel_all_orders():
@@ -32,10 +33,10 @@ def cancel_all_orders():
         url = BASE_URL + endpoint
 
         headers = {
-            'Content-Type': 'application/json',
-            'X-AUTH-SIGNATURE': signature,
-            'X-AUTH-APIKEY': API_KEY,
-            'X-AUTH-EPOCH': epoch_time
+            "Content-Type": "application/json",
+            "X-AUTH-SIGNATURE": signature,
+            "X-AUTH-APIKEY": API_KEY,
+            "X-AUTH-EPOCH": epoch_time,
         }
 
         # Send request
@@ -49,14 +50,16 @@ def cancel_all_orders():
             logging.info("Successfully cancelled orders!")
             print(json.dumps(response.json(), indent=2))
         else:
-            logging.error(f"Failed to cancel orders: {response.status_code} - {response.text}")
+            logging.error(
+                f"Failed to cancel orders: {response.status_code} - {response.text}"
+            )
 
     except Exception as e:
         logging.error(f"Exception occurred while cancelling orders: {e}")
+
 
 # Entry point
 if __name__ == "__main__":
     logging.info("Starting Futures Cancel All Orders...")
     cancel_all_orders()
     logging.info("Completed Cancel All Orders.")
-

@@ -20,10 +20,10 @@ signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 url = "https://coinswitch.co" + endpoint
 
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 logging.info("Sending Portfolio request...")
@@ -38,6 +38,8 @@ if response.status_code == 200:
     except Exception as e:
         logging.error(f"Exception occurred while parsing response: {e}")
 else:
-    logging.error(f"Failed to fetch portfolio: {response.status_code} - {response.text}")
+    logging.error(
+        f"Failed to fetch portfolio: {response.status_code} - {response.text}"
+    )
 
 logging.info("Completed Portfolio API.")

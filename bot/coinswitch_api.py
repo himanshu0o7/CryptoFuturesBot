@@ -19,8 +19,13 @@ def fetch_candles(symbol: str, interval: str = "5m", limit: int = 100):
     return send_request("GET", "/trade/api/v2/klines", params=params)
 
 
-def place_order(symbol: str, side: str, quantity: float, leverage: int = 1,
-                order_type: str = "MARKET"):
+def place_order(
+    symbol: str,
+    side: str,
+    quantity: float,
+    leverage: int = 1,
+    order_type: str = "MARKET",
+):
     """Place an order on CoinSwitch."""
     payload = {
         "symbol": symbol,
@@ -31,4 +36,3 @@ def place_order(symbol: str, side: str, quantity: float, leverage: int = 1,
         "exchange": "EXCHANGE_2",
     }
     return send_request("POST", "/trade/api/v2/futures/order", payload=payload)
-

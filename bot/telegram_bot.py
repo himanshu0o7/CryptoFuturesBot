@@ -20,4 +20,3 @@ def send_message(text: str) -> None:
             print(f"[ERROR] Telegram error {r.status_code}: {r.text}")
     except Exception as e:
         print(f"[ERROR] Telegram exception: {e}")
-
