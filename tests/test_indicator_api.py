@@ -21,14 +21,15 @@ except ModuleNotFoundError:  # pragma: no cover - fallback when package missing
 
     ed25519.Ed25519PrivateKey = _DummyPrivKey
     sys.modules.setdefault("cryptography", types.ModuleType("cryptography"))
-    sys.modules.setdefault("cryptography.hazmat", types.ModuleType("hazmat"))
+    sys.modules.setdefault("cryptography.hazmat", types.ModuleType("cryptography.hazmat"))
     sys.modules.setdefault(
-        "cryptography.hazmat.primitives", types.ModuleType("primitives")
+        "cryptography.hazmat.primitives",
+        types.ModuleType("cryptography.hazmat.primitives"),
     )
     sys.modules.setdefault(
-        "cryptography.hazmat.primitives.asymmetric", types.ModuleType("asymmetric")
+        "cryptography.hazmat.primitives.asymmetric",
+        types.ModuleType("cryptography.hazmat.primitives.asymmetric"),
     )
-    sys.modules["cryptography.hazmat.primitives.asymmetric.ed25519"] = ed25519
 
 try:
     import requests  # noqa: F401
