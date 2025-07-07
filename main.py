@@ -104,15 +104,19 @@ def main() -> None:
     exchange = ccxt.binance({"enableRateLimit": True})
 
     while True:
-        df = fetch_ohlcv(exchange)
-        signal = apply_strategy(df)
+        try:
+            df = fetch_ohlcv(exchange)
+            signal = apply_strategy(df)
 
-        if signal in {1, -1}:
-            execute_trade(exchange, signal, live_mode)
-        else:
-            logging.info("No clear signal.")
+            if signal in {1, -1}:
+                execute_trade(exchange, signal, live_mode)
+            else:
+                logging.info("No clear signal.")
 
-        time.sleep(300)
+            time.sleep(300)
+        except Exception as exc:
+            logging.error("An error occurred in the main loop: %s", exc)
+            time.sleep(60)  # Wait a bit before retrying to avoid spamming on persistent errors
 
 
 if __name__ == "__main__":
