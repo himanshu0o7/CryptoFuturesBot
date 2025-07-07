@@ -1,0 +1,33 @@
+name: CI - Conda & Script Check
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - environment.yml
+  pull_request:
+    paths:
+      - '**.py'
+      - environment.yml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: crypto-futures-bot
+          environment-file: environment.yml
+          python-version: 3.10
+          auto-activate-base: false
+
+      - name: Run Python Scripts
+        shell: bash -l {0}
+        run: |
+          python app.py
+          python check_env.py
+          python env_test.py
+          python coinswitch_wallet_balance_test.py
