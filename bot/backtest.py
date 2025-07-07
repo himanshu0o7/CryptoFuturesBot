@@ -37,7 +37,7 @@ def detect_signals(candles: List[Dict[str, float]]) -> List[float]:
     for i in range(1, len(candles) - 1):
         prev_close = candles[i - 1]["close"]
         current = candles[i]
-        price_change_percent = (current["close"] - prev_close) / prev_close * 100
+        price_change_percent = (current["close"] - prev_close) / prev_close * 100 if prev_close != 0 else 0
         quote_volume = current["close"] * current["volume"]
         next_close = candles[i + 1]["close"]
         if (
