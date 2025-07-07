@@ -1,12 +1,47 @@
 # CryptoFuturesBot
 
+codex/rewrite-readme.txt-as-readme.md
+## Overview
+CryptoFuturesBot is an experimental trading bot framework. It provides several
+modules for interacting with the CoinSwitch exchange and running strategy code.
+The repository includes utilities for signal generation, order execution and a
+Telegram notification system.
+
+## Setup
+1. **Create a virtual environment**
+   bash
+   python3 -m venv venv
+   source venv/bin/activate
+   
+2. **Install dependencies**
+   bash
+   pip install cryptography requests python-dotenv pandas ccxt pandas-ta python-telegram-bot
+   
+
+## Environment variables
+Copy `.env.sample` to `.env` and fill in the values:
+
+- `COINSWITCH_API_KEY`
+- `COINSWITCH_SECRET_KEY`
+- `OPENAI_API_KEY`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
+
+You can validate your environment using `validate_env.sh`.
+
+## Running the bot
+Execute the main entry script:
+```bash
+./run.sh
+
+
 This repository contains an experimental futures trading bot. It also includes several helper utilities and backup scripts.
 
 ## Setup
 
 1. **Clone the repository** and move into the project directory.
 2. **Create a Python virtual environment** and install dependencies:
-   ```bash
+   bash
    python3 -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt  # create this file with your preferred packages
@@ -51,3 +86,4 @@ These scripts help keep your trading data backed up regularly.
 - `codeium_explain_module.py` – example integration for explaining or fixing annotated code blocks.
 
 Set `OPENAI_API_KEY` in your environment to use these utilities.
+ master
