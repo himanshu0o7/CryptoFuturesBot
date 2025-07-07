@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 modules = ["python-3.10", "c-clang14", "bash"]
 run = "run = \"python3 infra/streamlit_app.py"
+=======
+modules = ["bash", "c-clang14", "nodejs-20", "python-3.10"]
+run = "run = \"python3 streamlit_app.py"
+>>>>>>> 2b72339 (AutoFix: Added environment.yml for GitHub Actions)
 
 [nix]
 channel = "stable-24_05"
