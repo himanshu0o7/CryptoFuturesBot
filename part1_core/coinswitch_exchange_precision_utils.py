@@ -12,9 +12,7 @@ logging.basicConfig(level=logging.INFO)
 # API parameters
 endpoint = "/trade/api/v2/exchangePrecision"
 method = "POST"
-payload = {
-    "exchange": "EXCHANGE_2"
-}
+payload = {"exchange": "EXCHANGE_2"}
 
 # Epoch time
 epoch_time = str(int(time.time() * 1000))
@@ -30,10 +28,10 @@ url = "https://coinswitch.co" + endpoint
 
 # Headers
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 # Request
@@ -46,8 +44,9 @@ try:
         logging.info("Exchange Precision fetched successfully!")
         print(json.dumps(response.json(), indent=2))
     else:
-        logging.error(f"Failed to fetch precision: {response.status_code} - {response.text}")
+        logging.error(
+            f"Failed to fetch precision: {response.status_code} - {response.text}"
+        )
 
 except Exception as e:
     logging.error(f"Exception occurred: {e}")
-

@@ -33,13 +33,13 @@ for buy_signal in signals.get("BUY", []):
         result = place_futures_order(
             symbol=symbol,
             side="BUY",
-            order_type="MARKET",   # You can change to "LIMIT" if needed
-            qty=10,                # Adjust quantity logic if required
+            order_type="MARKET",  # You can change to "LIMIT" if needed
+            qty=10,  # Adjust quantity logic if required
             price=None,
             trigger_price=None,
-            reduce_only=False
+            reduce_only=False,
         )
-        
+
         if result:
             log_entry = {
                 "timestamp": datetime.utcnow().isoformat(),
@@ -49,12 +49,12 @@ for buy_signal in signals.get("BUY", []):
                 "status": result["status"],
                 "exec_quantity": result["exec_quantity"],
                 "avg_execution_price": result["avg_execution_price"],
-                "realised_pnl": result["realised_pnl"]
+                "realised_pnl": result["realised_pnl"],
             }
             orders_log.append(log_entry)
-        
+
         time.sleep(1)  # Small delay to avoid API rate limits
-        
+
     except Exception as e:
         logging.error(f"Error processing BUY signal {buy_signal}: {e}")
 
@@ -69,13 +69,13 @@ for sell_signal in signals.get("SELL", []):
         result = place_futures_order(
             symbol=symbol,
             side="SELL",
-            order_type="MARKET",   # You can change to "LIMIT" if needed
-            qty=10,                # Adjust quantity logic if required
+            order_type="MARKET",  # You can change to "LIMIT" if needed
+            qty=10,  # Adjust quantity logic if required
             price=None,
             trigger_price=None,
-            reduce_only=True       # SELL usually reduce_only=True in Futures
+            reduce_only=True,  # SELL usually reduce_only=True in Futures
         )
-        
+
         if result:
             log_entry = {
                 "timestamp": datetime.utcnow().isoformat(),
@@ -85,12 +85,12 @@ for sell_signal in signals.get("SELL", []):
                 "status": result["status"],
                 "exec_quantity": result["exec_quantity"],
                 "avg_execution_price": result["avg_execution_price"],
-                "realised_pnl": result["realised_pnl"]
+                "realised_pnl": result["realised_pnl"],
             }
             orders_log.append(log_entry)
-        
+
         time.sleep(1)  # Small delay to avoid API rate limits
-        
+
     except Exception as e:
         logging.error(f"Error processing SELL signal {sell_signal}: {e}")
 
@@ -101,5 +101,3 @@ try:
     logging.info(f"[SUCCESS] All orders processed. Log saved to {ORDERS_LOG_FILE}")
 except Exception as e:
     logging.error(f"Error saving orders log: {e}")
-
-
