@@ -5,9 +5,8 @@ import pytest
 from tests import test_indicator_api, test_env_utils, test_telegram_bot
 
 if __name__ == "__main__":
-    modules = [test_indicator_api, test_env_utils, test_telegram_bot]
-    paths = [m.__file__ for m in modules]
-    raise SystemExit(pytest.main(paths))
+    # Run pytest on the 'tests' directory; it will discover all tests automatically.
+    raise SystemExit(pytest.main(["tests/"]))
 
 # Import individual test modules so they can be run together
 import tests.test_signal_generation
