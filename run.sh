@@ -1,4 +1,5 @@
 #!/bin/bash
+ codex/generate-requirements.txt-and-add-run.sh
 # Simple launcher for CryptoFuturesBot
 # Loads environment variables and runs main.py
 
@@ -14,3 +15,7 @@ if [ -f ".env" ]; then
 fi
 
 exec python3 main.py
+
+# Wrapper script to execute the full bot
+bash run_all.sh "$@"
+ master
