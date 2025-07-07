@@ -1,5 +1,13 @@
 import pytest
 
+ codex/add-tests-for-telegram-and-env_utils
+# Import test modules so their tests are registered
+from tests import test_indicator_api, test_env_utils, test_telegram_bot
+
+if __name__ == "__main__":
+    # Run pytest on the 'tests' directory; it will discover all tests automatically.
+    raise SystemExit(pytest.main(["tests/"]))
+
 # Import individual test modules so they can be run together
 import tests.test_signal_generation
 import tests.test_telegram_formatting
@@ -15,3 +23,4 @@ if __name__ == "__main__":
         tests.test_indicator_api.__file__,
     ])
 
+master
