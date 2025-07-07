@@ -1,141 +1,101 @@
- codex/update-streamlit_app-and-telegram_bot-functionality
-import json
 import os
+import json
 import time
 from datetime import datetime
-import requests
-import schedule
 
-import os
 import requests
-master
 from dotenv import load_dotenv
+
+try:
+    import schedule
+except ImportError:
+    schedule = None
+    print("[ERROR] Missing 'schedule' module. Please install it with 'pip install schedule'.")
 
 load_dotenv()
 
- codex/update-streamlit_app-and-telegram_bot-functionality
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-API_URL = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 
+TELEGRAM_ENABLED = bool(BOT_TOKEN and CHAT_ID)
+API_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage" if TELEGRAM_ENABLED else None
 
-def send_message(text: str) -> None:
-    if not TOKEN or not CHAT_ID:
-        print("[ERROR] Telegram credentials missing")
+def send_telegram(text):
+    if not TELEGRAM_ENABLED:
+        print(f"[SKIPPED] Telegram disabled: {text}")
         return
-    payload = {"chat_id": CHAT_ID, "text": text, "parse_mode": "HTML"}
     try:
-        requests.post(API_URL, json=payload, timeout=10)
-    except Exception as exc:
-        print(f"[ERROR] Failed to send message: {exc}")
-
-
-def alert_trade(trade: dict) -> None:
-    text = (
-        f"<b>Trade Executed</b>\n"
-        f"Symbol: {trade.get('symbol')}\n"
-        f"Side: {trade.get('side')}\n"
-        f"Qty: {trade.get('qty')}\n"
-        f"Price: {trade.get('price')}"
-
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
-if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
-    raise ValueError("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set in the .env file")
-
-TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-
-
-def send_message(text: str) -> None:
-    """Send a plain text Telegram message."""
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": text,
-        "parse_mode": "HTML"
-    }
-    try:
-        resp = requests.post(TELEGRAM_API_URL, json=payload, timeout=10)
-        resp.raise_for_status()
-    except Exception as exc:
-        print(f"[ERROR] Failed to send Telegram message: {exc}")
-    else:
+        res = requests.post(API_URL, json={
+            "chat_id": CHAT_ID,
+            "text": text,
+            "parse_mode": "HTML"
+        }, timeout=10)
+        res.raise_for_status()
         print("[SUCCESS] Telegram message sent")
+    except Exception as e:
+        print(f"[ERROR] Failed to send message: {e}")
 
-
-def alert_new_signals(buy_signals, sell_signals) -> None:
-    """Send an alert with lists of buy and sell signals."""
-    lines = ["<b>🚀 New Trading Signals</b>"]
-    if buy_signals:
-        lines.append("\n<b>Buy Signals</b>")
-        for s in buy_signals:
-            lines.append(f"✅ {s['symbol']} | {s['change_percent']}% | Vol ${s['quote_volume']:,} | Price {s['last_price']}")
-    if sell_signals:
-        lines.append("\n<b>Sell Signals</b>")
-        for s in sell_signals:
-            lines.append(f"🔻 {s['symbol']} | {s['change_percent']}% | Vol ${s['quote_volume']:,} | Price {s['last_price']}")
-    send_message("\n".join(lines))
-
-
-def alert_order_executed(order_id, symbol, side, qty, price) -> None:
-    text = (
+def alert_trade_execution(order_id, symbol, side, qty, price):
+    msg = (
         f"<b>Order Executed</b>\n"
         f"ID: {order_id}\n"
         f"Symbol: {symbol}\n"
         f"Side: {side}\n"
         f"Qty: {qty}\n"
         f"Price: {price}"
- master
     )
-    send_message(text)
+    send_telegram(msg)
 
+def alert_signals(buy, sell):
+    lines = ["<b>🚀 New Trading Signals</b>"]
+    if buy:
+        lines.append("\n<b>Buy Signals</b>")
+        for s in buy:
+            lines.append(f"✅ {s['symbol']} | {s['change_percent']}% | Vol ${s['quote_volume']:,} | Price {s['last_price']}")
+    if sell:
+        lines.append("\n<b>Sell Signals</b>")
+        for s in sell:
+            lines.append(f"🔻 {s['symbol']} | {s['change_percent']}% | Vol ${s['quote_volume']:,} | Price {s['last_price']}")
+    send_telegram("\n".join(lines))
 
- codex/update-streamlit_app-and-telegram_bot-functionality
-def alert_error(msg: str) -> None:
-    send_message(f"<b>Error</b>\n{msg}")
+def alert_sl_tp(event, symbol, qty, price):
+    msg = (
+        f"<b>{event} Triggered</b>\n"
+        f"Symbol: {symbol}\n"
+        f"Qty: {qty}\n"
+        f"Price: {price}"
+    )
+    send_telegram(msg)
 
+def alert_trailing_stop(symbol, new_stop):
+    send_telegram(
+        f"<b>Trailing Stop Updated</b>\n"
+        f"Symbol: {symbol}\n"
+        f"New Stop: {new_stop}"
+    )
 
-def daily_summary() -> None:
+def alert_error(message):
+    send_telegram(f"<b>Error</b>\n{message}")
+
+def daily_trade_summary():
     try:
         with open("orders_log.json") as f:
             trades = json.load(f)
     except Exception:
         trades = []
-    text = (
+    send_telegram(
         f"<b>Daily Summary {datetime.now().date()}</b>\n"
         f"Total trades: {len(trades)}"
-
-def alert_sl_tp(event_type, symbol, qty, price) -> None:
-    text = (
-        f"<b>{event_type} Triggered</b>\n"
-        f"Symbol: {symbol}\n"
-        f"Qty: {qty}\n"
-        f"Price: {price}"
-master
     )
-    send_message(text)
 
-
- codex/update-streamlit_app-and-telegram_bot-functionality
-def run() -> None:
-    schedule.every().day.at("17:00").do(daily_summary)
+def schedule_runner():
+    if not schedule:
+        print("[ERROR] Cannot run scheduler. 'schedule' module missing.")
+        return
+    schedule.every().day.at("17:00").do(daily_trade_summary)
     while True:
         schedule.run_pending()
         time.sleep(60)
 
-
 if __name__ == "__main__":
-    run()
-
-def alert_trailing_update(symbol, new_stop) -> None:
-    text = (
-        f"<b>Trailing Stop Updated</b>\n"
-        f"Symbol: {symbol}\n"
-        f"New Stop: {new_stop}"
-    )
-    send_message(text)
-
-
-if __name__ == "__main__":
-    send_message("Telegram bot initialized")
- master
+    send_telegram("Telegram bot initialized")

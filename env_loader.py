@@ -1,3 +1,4 @@
+# 1. .env Loader & API Validation
 def load_env():
     from dotenv import load_dotenv, find_dotenv
     import os

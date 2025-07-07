@@ -4,10 +4,7 @@ import json
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 
-# Supported exchanges (mocked for testing)
-valid_exchanges = ["coinswitchx", "wazirx"]
-
-# Mocked precision response for testing without API call
+# Mocked precision data for exchanges
 mocked_precision_data = {
     "coinswitchx": {
         "BTC": {"pricePrecision": 2, "quantityPrecision": 6},
@@ -19,15 +16,25 @@ mocked_precision_data = {
     }
 }
 
-def fetch_precision(exchange):
+def fetch_precision(exchange: str) -> dict:
+    """
+    Simulates an API call to fetch precision details for the given exchange.
+
+    Args:
+        exchange (str): The name of the exchange (e.g., 'coinswitchx', 'wazirx')
+
+    Returns:
+        dict: Precision data if exchange is found, else empty dict
+    """
     logging.info(f"Simulating API call for exchange: {exchange}")
     precision_data = mocked_precision_data.get(exchange)
     if precision_data:
         logging.info(f"Exchange Precision for {exchange}: {json.dumps(precision_data, indent=2)}")
+        return precision_data
     else:
         logging.error(f"Exchange '{exchange}' not found in mock data.")
+        return {}
 
 if __name__ == "__main__":
-    for exchange in valid_exchanges:
-        logging.info(f"Fetching Exchange Precision for: {exchange}")
+    for exchange in mocked_precision_data:
         fetch_precision(exchange)

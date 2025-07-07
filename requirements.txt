@@ -10,7 +10,12 @@ socketio>=0.2.1
 streamlit>=1.46.1
 telegram>=0.0.1
 google-generativeai>=0.8.5
- codex/generate-requirements.txt-from-pyproject.toml
 pytest
-
- master
+ruff-lsp==0.0.59
+ruff==0.8.2
+python-telegram-bot>=22.2
+ccxt
+pandas
+pandas_ta
+python-dotenv
+python-telegram-bot
