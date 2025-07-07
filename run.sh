@@ -14,7 +14,7 @@ if [ -f ".env" ]; then
   set +a
 fi
 
-exec python3 main.py
+exec python main.py
 
 # Wrapper script to execute the full bot
 bash run_all.sh "$@"
