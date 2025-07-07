@@ -3,6 +3,7 @@
 import os
 from dotenv import load_dotenv
 
+
 def run():
     print("[INFO] Running part1_core.config_loader ...")
     try:
@@ -23,4 +24,3 @@ def run():
 
     except Exception as e:
         print(f"[ERROR] config_loader failed: {e}")
-

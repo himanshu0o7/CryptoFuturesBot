@@ -12,32 +12,32 @@ pair = "BTCUSDT_5"  # BTCUSDT_5 → 5-min candles. You can also use BTCUSDT_1, B
 
 sio = socketio.Client()
 
+
 @sio.event
 def connect():
     print("✅ Connected to Coinswitch WS - CANDLES")
-    subscribe_data = {
-        'event': 'subscribe',
-        'pair': pair
-    }
+    subscribe_data = {"event": "subscribe", "pair": pair}
     sio.emit("FETCH_CANDLESTICK_CS_PRO", subscribe_data, namespace=namespace)
+
 
 @sio.on("FETCH_CANDLESTICK_CS_PRO", namespace=namespace)
 def on_message(data):
     print("========== Live Candle Update ==========")
     print(json.dumps(data, indent=2))
 
+
 @sio.event
 def disconnect():
     print("❌ Disconnected from Candles WS")
 
+
 sio.connect(
     url=base_url,
     namespaces=[namespace],
-    transports='websocket',
-    socketio_path='/pro/realtime-rates-socket/futures/exchange_2',
+    transports="websocket",
+    socketio_path="/pro/realtime-rates-socket/futures/exchange_2",
     wait=True,
-    wait_timeout=3600
+    wait_timeout=3600,
 )
 
 sio.wait()
-
