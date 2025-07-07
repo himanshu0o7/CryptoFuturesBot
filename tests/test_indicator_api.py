@@ -2,8 +2,48 @@ import importlib
 import sys
 import os
 import json
+import types
+import hashlib
 from unittest.mock import patch, MagicMock
-from cryptography.hazmat.primitives.asymmetric import ed25519
+
+try:
+    from cryptography.hazmat.primitives.asymmetric import ed25519
+except ModuleNotFoundError:  # pragma: no cover - fallback when package missing
+    ed25519 = types.ModuleType("ed25519")
+
+    class _DummyPrivKey:
+        @staticmethod
+        def from_private_bytes(data):
+            return _DummyPrivKey()
+
+        def sign(self, msg):
+            return hashlib.sha256(msg).digest()
+
+    ed25519.Ed25519PrivateKey = _DummyPrivKey
+    sys.modules.setdefault("cryptography", types.ModuleType("cryptography"))
+    sys.modules.setdefault("cryptography.hazmat", types.ModuleType("cryptography.hazmat"))
+    sys.modules.setdefault(
+        "cryptography.hazmat.primitives",
+        types.ModuleType("cryptography.hazmat.primitives"),
+    )
+    sys.modules.setdefault(
+        "cryptography.hazmat.primitives.asymmetric",
+        types.ModuleType("cryptography.hazmat.primitives.asymmetric"),
+    )
+
+try:
+    import requests  # noqa: F401
+except ModuleNotFoundError:  # pragma: no cover - allow tests without requests
+    requests = MagicMock()
+    sys.modules["requests"] = requests
+
+try:
+    from dotenv import load_dotenv  # noqa: F401
+except ModuleNotFoundError:  # pragma: no cover - allow tests without dotenv
+    load_dotenv = lambda *a, **k: True
+    dummy_dotenv = types.ModuleType("dotenv")
+    dummy_dotenv.load_dotenv = load_dotenv
+    sys.modules["dotenv"] = dummy_dotenv
 
 # helper to reload module with patched env
 
