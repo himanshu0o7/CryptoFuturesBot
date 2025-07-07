@@ -1,7 +1,8 @@
 import os
-os.environ.setdefault('TELEGRAM_BOT_TOKEN', 'token')
-os.environ.setdefault('TELEGRAM_CHAT_ID', 'chat')
-import telegram_bot
+def test_alert_new_signals_format(monkeypatch):
+    monkeypatch.setenv('TELEGRAM_BOT_TOKEN', 'token')
+    monkeypatch.setenv('TELEGRAM_CHAT_ID', 'chat')
+    import telegram_bot
 
 
 def test_alert_new_signals_format(monkeypatch):
