@@ -195,6 +195,7 @@ def main() -> None:
     while True:
         try:
             run()
+            run()
             time.sleep(300)
         except Exception as exc:  # noqa: BLE001
             logging.error("Error in main loop: %s", exc)
