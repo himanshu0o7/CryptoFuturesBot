@@ -10,4 +10,7 @@ socketio>=0.2.1
 streamlit>=1.46.1
 telegram>=0.0.1
 google-generativeai>=0.8.5
+ codex/generate-requirements.txt-from-pyproject.toml
 pytest
+
+ master
