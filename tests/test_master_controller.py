@@ -21,7 +21,7 @@ def test_main_function_output():
     # Capture stdout
     old_stdout = sys.stdout
     sys.stdout = captured_output = StringIO()
-    
+
     try:
         master_controller.main()
         output = captured_output.getvalue().strip()
