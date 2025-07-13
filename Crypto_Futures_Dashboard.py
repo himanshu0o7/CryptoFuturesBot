@@ -10,7 +10,11 @@ from coinswitch_client.APIClient import CoinSwitchV2FixedClient
 
 # --- 1. Configuration: Add your API Key ---
 # IMPORTANT: Replace "YOUR_API_KEY" with your actual Coinswitch API key.
-API_KEY = 16468005ed4e138e37458788ac46efd6b92765818ff0e3071fcfca2d84792223
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv("COINSWITCH_API_KEY", "YOUR_API_KEY_HERE")
 API_BASE_URL = "https://api.coinswitch.co" # Base URL for direct API calls
 
 # --- 2. API Client Initialization ---
