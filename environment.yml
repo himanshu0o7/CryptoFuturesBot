@@ -17,3 +17,10 @@ dependencies:
       - matplotlib
 - name: Copilot deploy
   uses: fuji97/aws-ecs-copilot-deploy@v1.1
+- name: Deploy service
+  uses: fuji97/aws-ecs-copilot-deploy@v1
+  with:
+    environments: prod
+    workloads: backend frontend
+    bucket: my-s3-bucket
+    deploy-method: manual
