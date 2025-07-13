@@ -19,8 +19,11 @@ except ImportError:
         return {"data": {"available_balance": 100.0}}
 
 try:
-    from coinswitch_api import CoinswitchAPI
+    from core.coinswitch_api_utils import CoinswitchAPI  # ✅ specify full path if needed
+    api = CoinswitchAPI("BTCUSDT")  # ✅ or whatever symbol you use
 except ImportError:
+    print("⚠️ ImportError: Using mock CoinswitchAPI")
+
     class CoinswitchAPI:
         def __init__(self, symbol):
             self.symbol = symbol
@@ -29,14 +32,8 @@ except ImportError:
         def start_candle_stream(self):
             print("[Mock] Starting candle stream")
 
-        def get_positions(self):
-            return []
+    api = CoinswitchAPI("BTCUSDT")  # fallback mock object
 
-        def place_order(self, side, quantity):
-            print(f"[Mock] Placing {side} order for {quantity}")
-
-        def close_position(self):
-            print("[Mock] Closing position")
 
 if STREAMLIT_AVAILABLE:
     st.set_page_config(page_title="CryptoFuturesBot", layout="wide")
