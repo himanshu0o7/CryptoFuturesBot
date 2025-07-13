@@ -11,14 +11,11 @@ from coinswitch_env_loader import API_KEY, secret_key
 logging.basicConfig(level=logging.INFO)
 
 
-
 def cancel_all_orders(symbol=None):
     endpoint = "/trade/api/v2/futures/cancel_all"
     method = "POST"
     params = {}
-    payload = {
-        "exchange": "EXCHANGE_2"
-    }
+    payload = {"exchange": "EXCHANGE_2"}
     if symbol:
         payload["symbol"] = symbol  # Optional: cancel only 1 symbol
 
@@ -27,10 +24,10 @@ def cancel_all_orders(symbol=None):
     url = "https://coinswitch.co" + endpoint
 
     headers = {
-        'Content-Type': 'application/json',
-        'X-AUTH-SIGNATURE': signature,
-        'X-AUTH-APIKEY': API_KEY,
-        'X-AUTH-EPOCH': epoch_time
+        "Content-Type": "application/json",
+        "X-AUTH-SIGNATURE": signature,
+        "X-AUTH-APIKEY": API_KEY,
+        "X-AUTH-EPOCH": epoch_time,
     }
 
     try:
@@ -43,13 +40,15 @@ def cancel_all_orders(symbol=None):
             response_json = response.json()
             print(json.dumps(response_json.get("data", {}), indent=2))
         else:
-            logging.error(f"Failed to cancel orders: {response.status_code} - {response.text}")
+            logging.error(
+                f"Failed to cancel orders: {response.status_code} - {response.text}"
+            )
 
     except Exception as e:
         logging.error(f"Exception occurred: {e}")
+
 
 if __name__ == "__main__":
     # Example test
     cancel_all_orders()  # Cancel ALL orders
     # cancel_all_orders(symbol="DOGEUSDT")  # Cancel only DOGEUSDT orders
-

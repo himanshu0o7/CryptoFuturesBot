@@ -12,4 +12,3 @@ if st.button("Fetch 5m candles"):
     if data and "data" in data:
         signal = detect_breakout(data["data"])
         st.write({"breakout": signal})
-

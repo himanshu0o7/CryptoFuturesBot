@@ -28,10 +28,10 @@ url = "https://coinswitch.co" + endpoint
 
 # Headers
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 # Call API
@@ -49,14 +49,17 @@ try:
             position_margin = item.get("blocked_balance_future", "N/A")
             main_balance_future = item.get("main_balance_future", "N/A")
 
-            print(f"Symbol: {currency} | Position Margin: {position_margin} | Main Balance (Future): {main_balance_future}")
+            print(
+                f"Symbol: {currency} | Position Margin: {position_margin} | Main Balance (Future): {main_balance_future}"
+            )
 
         print("=======================================\n")
     else:
-        logging.error(f"Failed to fetch positions: {response.status_code} - {response.text}")
+        logging.error(
+            f"Failed to fetch positions: {response.status_code} - {response.text}"
+        )
 
 except Exception as e:
     logging.error(f"Exception occurred: {str(e)}")
 
 logging.info("Completed Futures Positions API.")
-
