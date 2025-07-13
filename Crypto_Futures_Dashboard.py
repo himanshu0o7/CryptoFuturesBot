@@ -1,128 +1,175 @@
 import json
 import time
 import pandas as pd
+import streamlit as st
+import plotly.graph_objects as go
+import requests # Used for features not in the client library
 
+# Import the correct client from the library you installed
+from coinswitch_client.APIClient import CoinSwitchV2FixedClient
+
+# --- 1. Configuration: Add your API Key ---
+# IMPORTANT: Replace "YOUR_API_KEY" with your actual Coinswitch API key.
+API_KEY = "YOUR_API_KEY"
+API_BASE_URL = "https://api.coinswitch.co" # Base URL for direct API calls
+
+# --- 2. API Client Initialization ---
+# Initialize the client with your API key to interact with the Coinswitch API.
 try:
-    import streamlit as st
-    import plotly.graph_objects as go
-    STREAMLIT_AVAILABLE = True
-except ImportError:
-    STREAMLIT_AVAILABLE = False
-
-try:
-    from coinswitch_api_utils import send_request
-except ImportError:
-    print("ImportError: coinswitch_api_utils could not be resolved. Using mock function.")
-
-    def send_request(method, endpoint):
-        print(f"[Mock] {method} request to {endpoint}")
-        return {"data": {"available_balance": 100.0}}
-
-try:
-    from core.coinswitch_api_utils import CoinswitchAPI  # ✅ specify full path if needed
-    api = CoinswitchAPI("BTCUSDT")  # ✅ or whatever symbol you use
-except ImportError:
-    print("⚠️ ImportError: Using mock CoinswitchAPI")
-
-    class CoinswitchAPI:
-        def __init__(self, symbol):
-            self.symbol = symbol
-            self.candles = []
-
-        def start_candle_stream(self):
-            print("[Mock] Starting candle stream")
-
-    api = CoinswitchAPI("BTCUSDT")  # fallback mock object
+    client = CoinSwitchV2FixedClient(api_key=API_KEY)
+except Exception as e:
+    st.error(f"Failed to initialize Coinswitch client: {e}")
+    st.stop()
 
 
-if STREAMLIT_AVAILABLE:
-    st.set_page_config(page_title="CryptoFuturesBot", layout="wide")
+# --- 3. Helper Functions for API features NOT in the library ---
+# The 'coinswitchclient' library is basic. For features like wallet balance or
+# positions, we may need to make direct API calls.
 
-    mode = st.sidebar.radio("Mode", ["Paper", "Live"])
-    st.session_state["live_mode"] = mode == "Live"
-    symbol = st.sidebar.text_input("Symbol", value="BTCUSDT")
-
-    api = st.session_state.get("api")
-    if api is None or not isinstance(api, CoinswitchAPI) or api.symbol != symbol:
-        api = CoinswitchAPI(symbol)
-        api.start_candle_stream()
-        st.session_state["api"] = api
-
-    st.title("CryptoFuturesBot Dashboard")
-
-    st.subheader("Account Overview")
-    wallet_data = send_request("GET", "/trade/api/v2/futures/wallet_balance")
-    balance = wallet_data.get("data", {}).get("available_balance") if wallet_data else None
-    if balance is not None:
-        st.metric("Wallet Balance", balance)
-    else:
-        st.warning("Failed to fetch wallet balance")
-
-    st.subheader("Last Five Trades")
+def get_wallet_balance():
+    """
+    Placeholder: Fetches the futures wallet balance.
+    NOTE: You need to find the correct endpoint and required headers.
+    This is a sample implementation.
+    """
+    # This endpoint is a guess based on your original code.
+    endpoint = "/trade/api/v2/futures/wallet_balance"
+    headers = {
+        "x-api-key": API_KEY,
+        # You may need more headers for authentication (e.g., signature)
+    }
     try:
-        with open("orders_log.json") as f:
-            orders = json.load(f)
-        last_trades = orders[-5:] if isinstance(orders, list) else []
-        if last_trades:
-            st.table(last_trades)
-        else:
-            st.info("No trades recorded")
-    except Exception as exc:
-        st.error(f"Error loading orders_log.json: {exc}")
+        response = requests.get(f"{API_BASE_URL}{endpoint}", headers=headers)
+        response.raise_for_status() # Raise an error for bad status codes
+        return response.json()
+    except Exception as e:
+        print(f"Error fetching wallet balance: {e}")
+        return None
 
-    st.subheader("Signals")
-    try:
-        with open("signal_generator.json") as f:
-            signals = json.load(f)
-        st.json(signals)
-    except Exception as exc:
-        st.error(f"Error loading signal_generator.json: {exc}")
+def get_active_positions():
+    """
+    Placeholder: Fetches active trading positions.
+    NOTE: You need to implement this function with the correct API endpoint.
+    """
+    print("[Placeholder] Fetching active positions...")
+    # Example structure. Replace with a real API call.
+    return [{"symbol": "BTCUSDT", "side": "buy", "size": 0.1, "entry_price": 70000}]
 
-    st.title(f"Candles for {symbol} (5m)")
-    st.query_params.clear()
-    st.query_params["refresh"] = str(time.time())
+def get_candle_data(symbol, interval='5m', limit=100):
+    """
+    Placeholder: Fetches historical candle data.
+    NOTE: You need to implement this function with the correct API endpoint.
+    """
+    print(f"[Placeholder] Fetching {limit} candles for {symbol} ({interval})...")
+    # This function should return a list of lists, e.g.:
+    # [[timestamp, open, high, low, close, volume], ...]
+    return []
 
-    candles = getattr(api, "candles", [])[-60:]
-    if candles:
-        df = pd.DataFrame(candles, columns=["timestamp", "open", "high", "low", "close", "volume"])
-        df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
-        fig = go.Figure(data=[go.Candlestick(
-            x=df["timestamp"],
-            open=df["open"],
-            high=df["high"],
-            low=df["low"],
-            close=df["close"],
-        )])
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.info("Waiting for candle data...")
+# --- Main Streamlit App ---
+st.set_page_config(page_title="CryptoFuturesBot", layout="wide")
+st.title("CryptoFuturesBot Dashboard")
 
-    st.subheader("Active Positions")
-    try:
-        positions = api.get_positions()
-        if positions:
-            st.table(positions)
-        else:
-            st.write("No active positions")
-    except Exception as exc:
-        st.error(f"Error fetching active positions: {exc}")
+# --- Sidebar ---
+st.sidebar.title("Configuration")
+mode = st.sidebar.radio("Mode", ["Paper", "Live"])
+st.session_state["live_mode"] = mode == "Live"
+symbol = st.sidebar.text_input("Symbol", value="BTCUSDT").upper()
+deposit_coin = st.sidebar.text_input("Deposit Coin", value="btc").lower()
+destination_coin = st.sidebar.text_input("Destination Coin", value="eth").lower()
 
-    st.subheader("Manual Trading")
-    col1, col2, col3 = st.columns(3)
-    if col1.button("BUY"):
-        try:
-            api.place_order("buy", 1)
-        except Exception as exc:
-            st.error(f"Buy order failed: {exc}")
-    if col2.button("SELL"):
-        try:
-            api.place_order("sell", 1)
-        except Exception as exc:
-            st.error(f"Sell order failed: {exc}")
-    if col3.button("EXIT"):
-        try:
-            api.close_position()
-        except Exception as exc:
-            st.error(f"Exit position failed: {exc}")
+
+# --- Account Overview ---
+st.subheader("Account Overview")
+wallet_data = get_wallet_balance()
+balance = wallet_data.get("data", {}).get("available_balance") if wallet_data else None
+
+if balance is not None:
+    st.metric("Wallet Balance (Futures)", f"${balance:,.2f}")
 else:
-    print("Streamlit and/or Plotly is not installed. Please install required packages and run this script in a local environment.")
+    st.warning("Could not fetch wallet balance. See placeholder function.")
+
+# --- Live Candle Chart ---
+st.subheader(f"Candles for {symbol} (5m)")
+candles = get_candle_data(symbol) # Use the placeholder function
+if candles:
+    df = pd.DataFrame(candles, columns=["timestamp", "open", "high", "low", "close", "volume"])
+    df["timestamp"] = pd.to_datetime(df["timestamp"], unit="ms")
+    fig = go.Figure(data=[go.Candlestick(
+        x=df["timestamp"],
+        open=df["open"],
+        high=df["high"],
+        low=df["low"],
+        close=df["close"],
+    )])
+    fig.update_layout(xaxis_rangeslider_visible=False)
+    st.plotly_chart(fig, use_container_width=True)
+else:
+    st.info("Waiting for candle data... (Placeholder function needs implementation)")
+
+
+# --- Manual Trading ---
+st.subheader("Manual Trading")
+amount = st.number_input("Amount to Trade", value=1.0, min_value=0.01, step=0.01)
+col1, col2, col3 = st.columns(3)
+
+if col1.button("BUY"):
+    st.write(f"Placing BUY order for {amount} {deposit_coin} to {destination_coin}...")
+    # Use the client to place an offer.
+    # Note: This is an "offer", not a futures market order. Adapt as needed.
+    api_response = client.place_offer(deposit_coin, destination_coin, quantity_from=amount)
+    if api_response.is_success():
+        st.success("BUY order placed successfully!")
+        st.json(api_response.data())
+    else:
+        st.error(f"Buy order failed: {api_response.message()}")
+
+if col2.button("SELL"):
+    # Note: The concept of a simple "SELL" might map differently.
+    # This example shows placing an offer in the reverse direction.
+    st.write(f"Placing SELL order for {amount} {destination_coin} to {deposit_coin}...")
+    api_response = client.place_offer(destination_coin, deposit_coin, quantity_from=amount)
+    if api_response.is_success():
+        st.success("SELL order placed successfully!")
+        st.json(api_response.data())
+    else:
+        st.error(f"Sell order failed: {api_response.message()}")
+
+if col3.button("EXIT"):
+    st.warning("Exit/Close Position functionality needs to be implemented.")
+
+
+# --- Data Display Sections ---
+st.subheader("Active Positions")
+positions = get_active_positions() # Use the placeholder function
+if positions:
+    st.table(positions)
+else:
+    st.info("No active positions found. (Placeholder function needs implementation)")
+
+
+st.subheader("Last Five Trades")
+try:
+    with open("orders_log.json") as f:
+        orders = json.load(f)
+    # Ensure orders is a list before slicing
+    last_trades = orders[-5:] if isinstance(orders, list) else []
+    if last_trades:
+        st.table(last_trades)
+    else:
+        st.info("No trades recorded in orders_log.json")
+except FileNotFoundError:
+    st.info("orders_log.json not found. No trade history to display.")
+except Exception as exc:
+    st.error(f"Error loading orders_log.json: {exc}")
+
+
+st.subheader("Signals")
+try:
+    with open("signal_generator.json") as f:
+        signals = json.load(f)
+    st.json(signals)
+except FileNotFoundError:
+    st.info("signal_generator.json not found.")
+except Exception as exc:
+    st.error(f"Error loading signal_generator.json: {exc}")
+
