@@ -15,3 +15,5 @@ dependencies:
       - schedule
       - requests
       - matplotlib
+- name: Copilot deploy
+  uses: fuji97/aws-ecs-copilot-deploy@v1.1
