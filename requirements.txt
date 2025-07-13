@@ -19,3 +19,4 @@ pandas
 pandas_ta
 python-dotenv
 python-telegram-bot
+matplotlib
