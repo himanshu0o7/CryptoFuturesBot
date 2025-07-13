@@ -9,11 +9,11 @@
       "side": "LONG",
       "quantity": 10.0,
       "entry_price": 44702.27976235763,
-      "current_price": 45221.326116324555,
-      "unrealized_pnl": 5190.463539669217,
+      "current_price": 45075.60301916855,
+      "unrealized_pnl": 3733.2325681091606,
       "realized_pnl": 0.0,
       "entry_time": "2025-07-13T16:29:29.358733",
-      "last_update": "2025-07-13T16:29:34.359439"
+      "last_update": "2025-07-13T16:36:14.318204"
     }
   },
   "trade_history": [
