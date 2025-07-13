@@ -11,7 +11,7 @@ scripts = [
     "part1_core/coinswitch_futures_position_utils.py",
     "part1_core/signal_generator.py",
     "part1_core/coinswitch_order_executor.py",
-    "part1_core/coinswitch_pnl_tracker.py"  # safe dummy — prevents crash
+    "part1_core/coinswitch_pnl_tracker.py",  # safe dummy — prevents crash
 ]
 
 # Main loop
@@ -24,8 +24,6 @@ while True:
             result = subprocess.run(["python3", script], check=True, text=True)
         except subprocess.CalledProcessError as e:
             logging.error(f"Error running {script}: {e}")
-    
+
     logging.info("===== Sleeping 60 seconds... =====")
     time.sleep(60)
-
-

@@ -49,4 +49,3 @@ for symbol in symbols:
     print(f"Symbol: {symbol}")
 
 logging.info(f"Total valid symbols found: {len(symbols)}")
-

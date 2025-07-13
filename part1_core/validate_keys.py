@@ -9,4 +9,3 @@ if response and response.get("message") == "Valid Access":
     print("[SUCCESS] API Keys are valid!")
 else:
     print("[ERROR] API Keys are invalid!")
-

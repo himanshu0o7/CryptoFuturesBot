@@ -21,10 +21,10 @@ signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 url = "https://coinswitch.co" + endpoint
 
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 logging.basicConfig(level=logging.INFO)
@@ -46,7 +46,9 @@ if response.status_code == 200:
         ticker_data = []
 
     print("\n========== Futures PnL Tracker ==========")
-    print(f"{'Symbol':<12} {'Position Margin':>16} {'Blocked Balance':>16} {'Current Price':>16}")
+    print(
+        f"{'Symbol':<12} {'Position Margin':>16} {'Blocked Balance':>16} {'Current Price':>16}"
+    )
 
     for asset in assets:
         symbol = asset.get("symbol", "")
@@ -62,10 +64,13 @@ if response.status_code == 200:
                     current_price = ticker.get("lastPrice", "-")
                     break
 
-            print(f"{symbol:<12} {position_margin:>16.4f} {blocked_balance:>16.4f} {current_price:>16}")
+            print(
+                f"{symbol:<12} {position_margin:>16.4f} {blocked_balance:>16.4f} {current_price:>16}"
+            )
 
     print("=========================================")
 
 else:
-    logging.error(f"Failed to fetch wallet balance: {response.status_code} - {response.text}")
-
+    logging.error(
+        f"Failed to fetch wallet balance: {response.status_code} - {response.text}"
+    )

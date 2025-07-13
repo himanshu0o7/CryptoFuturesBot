@@ -7,6 +7,7 @@ import time
 from coinswitch_signature_utils import generate_signature
 from coinswitch_env_loader import API_KEY, secret_key
 
+
 def get_wallet_balance():
     endpoint = "/trade/api/v2/futures/wallet_balance"
     method = "GET"
@@ -19,10 +20,10 @@ def get_wallet_balance():
     url = "https://coinswitch.co" + endpoint
 
     headers = {
-        'Content-Type': 'application/json',
-        'X-AUTH-SIGNATURE': signature,
-        'X-AUTH-APIKEY': API_KEY,
-        'X-AUTH-EPOCH': epoch_time
+        "Content-Type": "application/json",
+        "X-AUTH-SIGNATURE": signature,
+        "X-AUTH-APIKEY": API_KEY,
+        "X-AUTH-EPOCH": epoch_time,
     }
 
     response = requests.request("GET", url, headers=headers, json=payload)
@@ -30,8 +31,11 @@ def get_wallet_balance():
         data = response.json().get("data", {})
         return data
     else:
-        logging.error(f"Failed to fetch wallet balance: {response.status_code} - {response.text}")
+        logging.error(
+            f"Failed to fetch wallet balance: {response.status_code} - {response.text}"
+        )
         return None
+
 
 def load_orders_log():
     try:
@@ -42,6 +46,7 @@ def load_orders_log():
         logging.error(f"Failed to load orders_log.json: {e}")
         return []
 
+
 # ---- MAIN ----
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
@@ -51,8 +56,10 @@ if __name__ == "__main__":
     orders_log = load_orders_log()
 
     print("\n========== Futures PnL Tracker (Enhanced) ==========")
-    print(f"{'Symbol':<12}{'Pos Margin':<14}{'Blocked':<10}{'Curr Price':<12}{'Entry Price':<12}{'Qty':<8}{'PnL %':<8}")
-    print("="*70)
+    print(
+        f"{'Symbol':<12}{'Pos Margin':<14}{'Blocked':<10}{'Curr Price':<12}{'Entry Price':<12}{'Qty':<8}{'PnL %':<8}"
+    )
+    print("=" * 70)
 
     if wallet_data:
         assets = wallet_data.get("asset", [])
@@ -93,15 +100,20 @@ if __name__ == "__main__":
                     pnl = (entry_price - current_price) * quantity
 
                 try:
-                    pnl_pct = (pnl / (entry_price * quantity)) * 100 if entry_price > 0 and quantity > 0 else 0
+                    pnl_pct = (
+                        (pnl / (entry_price * quantity)) * 100
+                        if entry_price > 0 and quantity > 0
+                        else 0
+                    )
                 except:
                     pnl_pct = 0
 
                 row = f"{symbol:<12}{pos_margin:<14.4f}{blocked_balance:<10.4f}{current_price:<12.4f}{entry_price:<12.4f}{quantity:<8.4f}{pnl_pct:<8.2f}"
                 print(row)
             else:
-                logging.warning(f"No matching order found for {symbol}, skipping PnL calc.")
+                logging.warning(
+                    f"No matching order found for {symbol}, skipping PnL calc."
+                )
 
-    print("="*70)
+    print("=" * 70)
     print("Completed Enhanced PnL Tracker.")
-
