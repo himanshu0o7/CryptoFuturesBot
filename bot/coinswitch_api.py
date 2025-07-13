@@ -3,6 +3,7 @@ import socketio
 from typing import List, Dict, Optional
 from core.coinswitch_api_utils import send_request
 
+
 class CoinswitchAPI:
     """Simple wrapper for Coinswitch REST/WebSocket endpoints."""
 
@@ -23,7 +24,9 @@ class CoinswitchAPI:
         @self._sio.event
         def connect():
             subscribe = {"event": "subscribe", "pair": self._pair}
-            self._sio.emit("FETCH_CANDLESTICK_CS_PRO", subscribe, namespace=self._namespace)
+            self._sio.emit(
+                "FETCH_CANDLESTICK_CS_PRO", subscribe, namespace=self._namespace
+            )
 
         @self._sio.on("FETCH_CANDLESTICK_CS_PRO", namespace=self._namespace)
         def on_candle(data):
@@ -52,7 +55,13 @@ class CoinswitchAPI:
             return resp["data"]
         return []
 
-    def place_order(self, side: str, quantity: float, price: float = None, order_type: str = "market"):
+    def place_order(
+        self,
+        side: str,
+        quantity: float,
+        price: float = None,
+        order_type: str = "market",
+    ):
         payload = {
             "side": side.lower(),
             "symbol": self.symbol,

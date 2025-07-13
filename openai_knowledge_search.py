@@ -30,14 +30,14 @@ functions = [
                         "properties": {
                             "num_results": {"type": "integer"},
                             "domain_filter": {"type": ["string", "null"]},
-                            "sort_by": {"type": "string"}
+                            "sort_by": {"type": "string"},
                         },
-                        "required": ["num_results", "sort_by"]
-                    }
+                        "required": ["num_results", "sort_by"],
+                    },
                 },
-                "required": ["query", "options"]
-            }
-        }
+                "required": ["query", "options"],
+            },
+        },
     }
 ]
 
@@ -46,7 +46,7 @@ response = client.chat.completions.create(
     model="gpt-4.1",
     messages=[
         {"role": "system", "content": "You are a helpful assistant"},
-        {"role": "user", "content": "How to use ChatGPT plugins in 2025?"}
+        {"role": "user", "content": "How to use ChatGPT plugins in 2025?"},
     ],
     tools=functions,
     tool_choice={"type": "function", "function": {"name": "search_knowledge_base"}},
@@ -64,4 +64,3 @@ if tool_calls:
         print(f"🔍 Simulating: Searching for '{eval(arguments)['query']}'")
 else:
     print("⚠️ No tool_calls in response.")
-

@@ -12,40 +12,56 @@ if not api_key:
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
 
+
 def run_search_tool(query="ChatGPT plugin usage", num_results=3):
-    tools = [{
-        "type": "function",
-        "function": {
-            "name": "search_knowledge_base",
-            "description": "Retrieve info on a technical topic.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "query": {"type": "string"},
-                    "options": {
-                        "type": "object",
-                        "properties": {
-                            "num_results": {"type": "number"},
-                            "domain_filter": {"type": ["string", "null"]},
-                            "sort_by": {
-                                "type": ["string", "null"],
-                                "enum": ["relevance", "date", "popularity", "alphabetical"]
-                            }
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "search_knowledge_base",
+                "description": "Retrieve info on a technical topic.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string"},
+                        "options": {
+                            "type": "object",
+                            "properties": {
+                                "num_results": {"type": "number"},
+                                "domain_filter": {"type": ["string", "null"]},
+                                "sort_by": {
+                                    "type": ["string", "null"],
+                                    "enum": [
+                                        "relevance",
+                                        "date",
+                                        "popularity",
+                                        "alphabetical",
+                                    ],
+                                },
+                            },
+                            "required": ["num_results", "domain_filter", "sort_by"],
                         },
-                        "required": ["num_results", "domain_filter", "sort_by"]
-                    }
+                    },
+                    "required": ["query", "options"],
                 },
-                "required": ["query", "options"]
-            }
+            },
         }
-    }]
+    ]
 
     try:
         response = client.chat.completions.create(
             model="gpt-4o",  # Updated to a valid model
-            messages=[{"role": "user", "content": f"Please search the knowledge base for {query}"}],
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Please search the knowledge base for {query}",
+                }
+            ],
             tools=tools,
-            tool_choice={"type": "function", "function": {"name": "search_knowledge_base"}}
+            tool_choice={
+                "type": "function",
+                "function": {"name": "search_knowledge_base"},
+            },
         )
 
         tool_calls = getattr(response.choices[0].message, "tool_calls", None)
@@ -60,7 +76,10 @@ def run_search_tool(query="ChatGPT plugin usage", num_results=3):
                     print("⚠️ Missing required arguments.")
                     continue
                 options = args["options"]
-                if not all(key in options for key in ["num_results", "domain_filter", "sort_by"]):
+                if not all(
+                    key in options
+                    for key in ["num_results", "domain_filter", "sort_by"]
+                ):
                     print("⚠️ Missing required options.")
                     continue
                 print(f"\n🔍 Searching: {args['query']}")
@@ -75,7 +94,7 @@ def run_search_tool(query="ChatGPT plugin usage", num_results=3):
     except Exception as e:
         print(f"❌ API Request Failed: {e}")
 
+
 # Example usage
 if __name__ == "__main__":
     run_search_tool()
-

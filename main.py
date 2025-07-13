@@ -11,18 +11,22 @@ load_dotenv()
 API_KEY = os.getenv("COINSWITCH_API_KEY")
 API_SECRET = os.getenv("COINSWITCH_API_SECRET")
 
+
 # ==== Price Fetch ====
 def get_live_price(symbol="BTCUSDT"):
     import requests
+
     url = f"https://api.coinswitch.co/v2/price?symbol={symbol}"
     response = requests.get(url, timeout=10)
     response.raise_for_status()
-    return float(response.json().get('price'))
+    return float(response.json().get("price"))
+
 
 # ==== Order Placement (Mocked) ====
 def place_order(symbol, qty, side="BUY"):
     print(f"[ORDER MOCK] {side} {qty} {symbol}")
     return {"status": "success", "order_id": f"{symbol}-{side}-MOCK"}
+
 
 # ==== Main Bot Logic ====
 if __name__ == "__main__":

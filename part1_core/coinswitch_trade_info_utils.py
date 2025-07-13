@@ -14,9 +14,7 @@ endpoint = "/trade/api/v2/tradeInfo"
 method = "GET"
 
 # REQUIRED PARAM
-params = {
-    "exchange": "EXCHANGE_2"   # REQUIRED - this was missing before!
-}
+params = {"exchange": "EXCHANGE_2"}  # REQUIRED - this was missing before!
 
 payload = {}
 
@@ -27,14 +25,14 @@ epoch_time = str(int(time.time() * 1000))
 signature = generate_signature(method, endpoint, params, epoch_time, secret_key)
 
 # Full URL with params
-url = "https://coinswitch.co" + endpoint + '?' + urlencode(params)
+url = "https://coinswitch.co" + endpoint + "?" + urlencode(params)
 
 # Headers
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 # Call API
@@ -47,8 +45,9 @@ try:
         logging.info("Trade Info fetched successfully!")
         print(response.json())
     else:
-        logging.error(f"Failed to fetch Trade Info: {response.status_code} - {response.text}")
+        logging.error(
+            f"Failed to fetch Trade Info: {response.status_code} - {response.text}"
+        )
 
 except Exception as e:
     logging.error(f"Exception occurred: {e}")
-
