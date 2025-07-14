@@ -1,0 +1,31 @@
+{
+  "balance": -437022.79762357636,
+  "equity": 10000.0,
+  "peak_equity": 10000.0,
+  "max_drawdown": 0.0,
+  "positions": {
+    "BTCUSDT": {
+      "symbol": "BTCUSDT",
+      "side": "LONG",
+      "quantity": 10.0,
+      "entry_price": 44702.27976235763,
+      "current_price": 45075.60301916855,
+      "unrealized_pnl": 3733.2325681091606,
+      "realized_pnl": 0.0,
+      "entry_time": "2025-07-13T16:29:29.358733",
+      "last_update": "2025-07-13T16:36:14.318204"
+    }
+  },
+  "trade_history": [
+    {
+      "symbol": "BTCUSDT",
+      "side": "BUY",
+      "quantity": 10.0,
+      "price": 44702.27976235763,
+      "fee": 0.0,
+      "timestamp": "2025-07-13T16:29:29.358720",
+      "order_id": "SIM_1752424169",
+      "pnl": 0.0
+    }
+  ]
+}
