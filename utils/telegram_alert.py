@@ -81,7 +81,7 @@ def send_trade_alert(symbol: str, action: str, quantity: float, price: float,
 🔄 Action: {action.upper()}
 📈 Quantity: {quantity}
 💰 Price: ₹{price:,.2f}
-🕐 Time: {os.environ.get('TZ', 'UTC')}{order_info}
+🕐 Time: {datetime.now().isoformat()}{order_info}
     """.strip()
     
     return send_telegram_alert(message)
