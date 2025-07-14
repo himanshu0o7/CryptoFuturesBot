@@ -64,6 +64,7 @@ def initialize_services():
         logger.error(f"Failed to initialize services: {e}")
         raise
 
+
 # ==== Price Fetch ====
 def get_live_price(data_feed, symbol=DEFAULT_SYMBOL):
     """Get live price using data feed service"""
@@ -102,6 +103,7 @@ def place_order(trade_executor, symbol, qty, side="BUY"):
     except Exception as e:
         logger.error(f"Error placing order: {e}")
         return {"status": "error", "order_id": None}
+
 
 # ==== Main Bot Logic ====
 def run_bot():

@@ -9,19 +9,19 @@ load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
+
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": message,
-        "parse_mode": "HTML"
-    }
+    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "HTML"}
     response = requests.post(url, json=payload)
 
     if response.status_code == 200:
         print("[SUCCESS] Telegram alert sent!")
     else:
-        print(f"[ERROR] Failed to send Telegram alert: {response.status_code} - {response.text}")
+        print(
+            f"[ERROR] Failed to send Telegram alert: {response.status_code} - {response.text}"
+        )
+
 
 def main():
     try:
@@ -51,6 +51,6 @@ def main():
 
     send_telegram_message(message)
 
+
 if __name__ == "__main__":
     main()
-

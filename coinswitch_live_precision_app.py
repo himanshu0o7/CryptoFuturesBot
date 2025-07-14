@@ -11,10 +11,7 @@ USE_MOCK = True  # Toggle this to False for real API call
 API_URL = "https://trade-api.coinswitch.co/v2/exchangePrecision"
 API_KEY = os.getenv("COINSWITCH_API_KEY", "your_api_key_here")
 EXCHANGES = ["coinswitchx", "wazirx"]
-HEADERS = {
-    "Content-Type": "application/json",
-    "X-API-KEY": API_KEY
-}
+HEADERS = {"Content-Type": "application/json", "X-API-KEY": API_KEY}
 MAX_RETRIES = 3
 RETRY_DELAY = 3  # seconds
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -24,16 +21,17 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 MOCKED_DATA = {
     "coinswitchx": {
         "BTC": {"pricePrecision": 2, "quantityPrecision": 6},
-        "ETH": {"pricePrecision": 2, "quantityPrecision": 5}
+        "ETH": {"pricePrecision": 2, "quantityPrecision": 5},
     },
     "wazirx": {
         "BTC": {"pricePrecision": 1, "quantityPrecision": 5},
-        "ETH": {"pricePrecision": 2, "quantityPrecision": 4}
-    }
+        "ETH": {"pricePrecision": 2, "quantityPrecision": 4},
+    },
 }
 
 # --- Setup Logging ---
 logging.basicConfig(level=logging.INFO)
+
 
 # --- Send Telegram Alert ---
 def send_telegram_alert(message):
@@ -47,6 +45,7 @@ def send_telegram_alert(message):
         logging.info("Telegram alert sent.")
     except Exception as e:
         logging.error(f"Failed to send Telegram alert: {e}")
+
 
 # --- Fetch Precision ---
 def fetch_precision(exchange):
@@ -66,13 +65,17 @@ def fetch_precision(exchange):
             logging.warning(f"Attempt {attempt} failed for {exchange}: {e}")
             if attempt == MAX_RETRIES:
                 logging.error(f"All retries failed for {exchange}.")
-                send_telegram_alert(f"❌ Failed to fetch precision data for {exchange} after {MAX_RETRIES} attempts.")
+                send_telegram_alert(
+                    f"❌ Failed to fetch precision data for {exchange} after {MAX_RETRIES} attempts."
+                )
             time.sleep(RETRY_DELAY)
     return {}
+
 
 # --- Export Helpers ---
 def get_timestamp():
     return datetime.now().strftime("%Y%m%d_%H%M%S")
+
 
 def export_to_json(data, filename_prefix="precision_data"):
     filename = f"{filename_prefix}_{get_timestamp()}.json"
@@ -80,15 +83,24 @@ def export_to_json(data, filename_prefix="precision_data"):
         json.dump(data, f, indent=2)
     logging.info(f"Exported data to {filename}")
 
+
 def export_to_csv(data, filename_prefix="precision_data"):
     filename = f"{filename_prefix}_{get_timestamp()}.csv"
-    with open(filename, "w", newline='') as f:
+    with open(filename, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["Exchange", "Symbol", "Price Precision", "Quantity Precision"])
         for exchange, symbols in data.items():
             for symbol, precisions in symbols.items():
-                writer.writerow([exchange, symbol, precisions['pricePrecision'], precisions['quantityPrecision']])
+                writer.writerow(
+                    [
+                        exchange,
+                        symbol,
+                        precisions["pricePrecision"],
+                        precisions["quantityPrecision"],
+                    ]
+                )
     logging.info(f"Exported data to {filename}")
+
 
 # --- Main Logic ---
 def main():
@@ -109,6 +121,7 @@ def main():
         print("✅ Data exported with timestamp filenames.")
     else:
         print("❌ No precision data to export.")
+
 
 if __name__ == "__main__":
     main()

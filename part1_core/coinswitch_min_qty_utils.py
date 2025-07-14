@@ -9,7 +9,9 @@ from dotenv import load_dotenv
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Load .env file
 load_dotenv()
@@ -20,23 +22,29 @@ API_SECRET = os.getenv("COINSWITCH_API_SECRET")
 
 # Safety checks
 if not API_KEY or not API_SECRET:
-    raise ValueError("COINSWITCH_API_KEY and COINSWITCH_API_SECRET must be set in .env!")
-if not re.match(r'^[0-9a-fA-F]{64}$', API_SECRET):
+    raise ValueError(
+        "COINSWITCH_API_KEY and COINSWITCH_API_SECRET must be set in .env!"
+    )
+if not re.match(r"^[0-9a-fA-F]{64}$", API_SECRET):
     raise ValueError("API_SECRET must be a 64-character hexadecimal string!")
+
 
 # Signature generator
 def get_signature(method, endpoint, params, epoch_time, secret_key):
     unquote_endpoint = endpoint
     if method == "GET" and len(params) != 0:
-        endpoint += ('&', '?')[urllib.parse.urlparse(endpoint).query == ''] + urlencode(params)
+        endpoint += ("&", "?")[urllib.parse.urlparse(endpoint).query == ""] + urlencode(
+            params
+        )
     unquote_endpoint = urllib.parse.unquote_plus(endpoint)
     signature_msg = method + unquote_endpoint + epoch_time
-    request_string = bytes(signature_msg, 'utf-8')
+    request_string = bytes(signature_msg, "utf-8")
     secret_key_bytes = bytes.fromhex(secret_key)
     private_key = ed25519.Ed25519PrivateKey.from_private_bytes(secret_key_bytes)
     signature_bytes = private_key.sign(request_string)
     signature = signature_bytes.hex()
     return signature
+
 
 # === STEP 1: Sync server time ===
 logging.info("Fetching /time ...")
@@ -57,9 +65,7 @@ logging.info(f"Using serverTime: {epoch_time}")
 # === STEP 2: Call Trade Info API ===
 method = "GET"
 endpoint = "/trade/api/v2/tradeInfo"
-params = {
-    "exchange": "EXCHANGE_2"
-}
+params = {"exchange": "EXCHANGE_2"}
 
 # Generate signature
 signature = get_signature(method, endpoint, params, epoch_time, API_SECRET)
@@ -69,10 +75,10 @@ url = "https://coinswitch.co" + endpoint
 
 # Headers
 headers = {
-    'Content-Type': 'application/json',
-    'X-AUTH-SIGNATURE': signature,
-    'X-AUTH-APIKEY': API_KEY,
-    'X-AUTH-EPOCH': epoch_time
+    "Content-Type": "application/json",
+    "X-AUTH-SIGNATURE": signature,
+    "X-AUTH-APIKEY": API_KEY,
+    "X-AUTH-EPOCH": epoch_time,
 }
 
 # Make API call

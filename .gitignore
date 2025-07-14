@@ -15,4 +15,7 @@ venv/
 *.log
 *.zip
 
-
+# Dead code detection reports
+*dead_code_report*.txt
+*unused_code_report*.txt
+vulture_whitelist.py

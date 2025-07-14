@@ -8,17 +8,17 @@ import logging
 import importlib
 
 # Setup logging
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
 # Allowed parts
 allowed_parts = [
-    'part1_core',
-    'part2_strategy',
-    'part3_execution',
-    'part4_monitoring',
-    'part5_advanced',
-    'shared_data',
-    'template_modules'
+    "part1_core",
+    "part2_strategy",
+    "part3_execution",
+    "part4_monitoring",
+    "part5_advanced",
+    "shared_data",
+    "template_modules",
 ]
 
 # Validate arguments
@@ -41,7 +41,7 @@ if not os.path.exists(module_dir):
     logging.error(f"Directory not found: {module_dir}")
     sys.exit(1)
 
-module_files = [f for f in os.listdir(module_dir) if f.endswith('.py')]
+module_files = [f for f in os.listdir(module_dir) if f.endswith(".py")]
 
 if not module_files:
     logging.warning(f"No Python modules found in {module_dir}")
@@ -56,7 +56,7 @@ for module_file in module_files:
 
     try:
         mod = importlib.import_module(module_path)
-        if hasattr(mod, 'main'):
+        if hasattr(mod, "main"):
             mod.main()
         else:
             logging.warning(f"No main() function in {module_path}")
@@ -64,4 +64,3 @@ for module_file in module_files:
         logging.error(f"Error running {module_path}: {e}")
 
 logging.info("Test run completed.")
-

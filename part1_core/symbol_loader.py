@@ -2,6 +2,7 @@
 import json
 from coinswitch_api_utils import send_request
 
+
 def load_and_save_symbols():
     print("[INFO] Fetching symbols from Coinswitch...")
     params = {"exchange": "coinswitchx"}
@@ -17,6 +18,6 @@ def load_and_save_symbols():
     else:
         print("[ERROR] Failed to fetch symbols!")
 
+
 if __name__ == "__main__":
     load_and_save_symbols()
-
